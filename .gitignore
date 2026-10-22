@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+.venv/
+procurement.db
+procurement.db-shm
+procurement.db-wal
+static/uploads/*
+!static/uploads/.gitkeep

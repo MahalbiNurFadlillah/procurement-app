@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Purchase Request Baru{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <p class="eyebrow mb-1">REQUESTER</p>
+  <h1 class="h2">Buat Purchase Request</h1>
+  <p class="text-secondary">Lengkapi kebutuhan barang atau jasa untuk diteruskan ke approval.</p>
+</div>
+<form method="post" enctype="multipart/form-data" class="card border-0 shadow-sm">
+  <div class="card-body p-4">
+    <div class="row g-3">
+      <div class="col-md-8">
+        <label class="form-label" for="item_name">Nama barang/jasa *</label>
+        <input class="form-control" id="item_name" name="item_name" value="{{ prefill.get('item_name', '') if prefill else '' }}" required maxlength="200">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label" for="quantity">Kuantitas *</label>
+        <input class="form-control" id="quantity" name="quantity" type="number" min="1" value="{{ prefill.get('quantity', '') if prefill else '' }}" required>
+      </div>
+      <div class="col-12">
+        <label class="form-label" for="specification">Spesifikasi</label>
+        <textarea class="form-control" id="specification" name="specification" rows="3">{{ prefill.get('specification', '') if prefill else '' }}</textarea>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="budget">Estimasi anggaran (Rp)</label>
+        <input class="form-control" id="budget" name="budget" type="number" min="0" step="1000" value="{{ prefill.get('budget', '') if prefill else '' }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="attachment">Dokumen pendukung (opsional)</label>
+        <input class="form-control" id="attachment" name="attachment" type="file" accept=".pdf,.png,.jpg,.jpeg">
+        <div class="form-text">PDF atau gambar, maksimal 8 MB.</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer bg-white p-3 d-flex gap-2 justify-content-end">
+    <a class="btn btn-light" href="{{ url_for('request_list') }}">Batal</a>
+    <button class="btn btn-primary" type="submit">Kirim untuk Approval</button>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if supplier else 'Tambah' }} Supplier{% endblock %}
+{% block content %}
+<div class="mb-4"><p class="eyebrow mb-1">MASTER DATA</p><h1 class="h2">{{ 'Edit' if supplier else 'Tambah' }} Supplier</h1></div>
+<form method="post" class="card border-0 shadow-sm"><div class="card-body p-4">
+  <div class="mb-3"><label class="form-label" for="name">Nama supplier *</label><input class="form-control" id="name" name="name" value="{{ supplier.name if supplier else '' }}" required maxlength="200"></div>
+  <div class="mb-3"><label class="form-label" for="contact">Kontak</label><input class="form-control" id="contact" name="contact" value="{{ supplier.contact if supplier else '' }}" maxlength="200"></div>
+  <div class="mb-3"><label class="form-label" for="address">Alamat</label><textarea class="form-control" id="address" name="address" rows="3">{{ supplier.address if supplier else '' }}</textarea></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="active" name="active" value="yes" {{ 'checked' if not supplier or supplier.active else '' }}><label class="form-check-label" for="active">Supplier aktif</label></div>
+</div><div class="card-footer bg-white text-end"><a class="btn btn-light" href="{{ url_for('supplier_list') }}">Batal</a> <button class="btn btn-primary">Simpan Supplier</button></div></form>
+{% endblock %}

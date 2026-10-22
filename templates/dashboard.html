@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-4">
+  <div>
+    <p class="eyebrow mb-1">RINGKASAN PENGADAAN</p>
+    <h1 class="h2 mb-0">Dashboard</h1>
+  </div>
+  {% if current_user.role == 'requester' %}
+  <div class="d-flex gap-2">
+    <a class="btn btn-primary" href="{{ url_for('create_request') }}">+ Buat Request</a>
+    <a class="btn btn-outline-primary" href="{{ url_for('ocr_upload') }}">Bantu isi dengan OCR</a>
+  </div>
+  {% elif current_user.role == 'approver' %}
+  <a class="btn btn-primary" href="{{ url_for('approval_list') }}">Buka antrean approval</a>
+  {% elif current_user.role == 'procurement' %}
+  <a class="btn btn-primary" href="{{ url_for('po_list') }}">Lihat Purchase Order</a>
+  {% elif current_user.role == 'warehouse' %}
+  <a class="btn btn-primary" href="{{ url_for('receiving_list') }}">Buka penerimaan</a>
+  {% endif %}
+</div>
+
+<div class="row g-3 mb-4">
+  {% for key, label in [('pending','Menunggu approval'), ('approved','Disetujui'), ('po_created','Dalam pengadaan'), ('received','Selesai'), ('rejected','Dikembalikan')] %}
+  <div class="col-6 col-xl">
+    <div class="card metric-card h-100">
+      <div class="card-body">
+        <div class="text-secondary small">{{ label }}</div>
+        <div class="fs-3 fw-semibold">{{ status_counts.get(key, 0) }}</div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+    <h2 class="h5 mb-0">
+      {% if current_user.role == 'requester' %}Request Terbaru
+      {% elif current_user.role == 'approver' %}Perlu Approval
+      {% elif current_user.role == 'procurement' %}Request Disetujui
+      {% elif current_user.role == 'warehouse' %}PO Menunggu Penerimaan
+      {% else %}Aktivitas Request{% endif %}
+    </h2>
+    <a class="small" href="{{ url_for('request_list') }}">Semua request</a>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead><tr>
+        {% if current_user.role in ['approver', 'admin'] %}<th>Requester</th>{% endif %}
+        <th>Barang</th><th>Qty</th><th>Status</th><th>Aksi</th>
+      </tr></thead>
+      <tbody>
+      {% for item in items %}
+        {% if current_user.role == 'warehouse' %}
+        <tr>
+          <td>{{ item.purchase_request.item_name }}</td><td>{{ item.purchase_request.quantity }}</td>
+          <td><span class="badge text-bg-primary">{{ item.status }}</span></td>
+          <td><a class="btn btn-sm btn-outline-primary" href="{{ url_for('receiving', po_id=item.id) }}">Terima</a></td>
+        </tr>
+        {% else %}
+        <tr>
+          {% if current_user.role in ['approver', 'admin'] %}<td>{{ item.requester.full_name or item.requester.username }}</td>{% endif %}
+          <td>{{ item.item_name }}</td><td>{{ item.quantity }}</td>
+          <td><span class="badge status-{{ item.status }}">{{ item.status|replace('_',' ') }}</span></td>
+          <td>
+            {% if current_user.role == 'procurement' %}
+              <div class="small text-secondary mb-1">Stok: {{ stock_levels.get(item.item_name, 0) }} / {{ item.quantity }}</div>
+              {% if stock_levels.get(item.item_name, 0) >= item.quantity %}
+                <form class="d-inline" method="post" action="{{ url_for('dispatch_from_stock', req_id=item.id) }}">
+                  <button class="btn btn-sm btn-success" type="submit">Dispatch dari stok</button>
+                </form>
+              {% else %}
+                <a class="btn btn-sm btn-primary" href="{{ url_for('create_po', req_id=item.id) }}">Buat PO</a>
+              {% endif %}
+            {% elif current_user.role == 'approver' %}
+              <a class="btn btn-sm btn-outline-primary" href="{{ url_for('approval_list') }}">Review</a>
+            {% else %}-{% endif %}
+          </td>
+        </tr>
+        {% endif %}
+      {% else %}
+        <tr><td colspan="{{ 5 if current_user.role in ['approver', 'admin'] else 4 }}" class="text-center text-secondary py-4">Belum ada data untuk ditampilkan.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

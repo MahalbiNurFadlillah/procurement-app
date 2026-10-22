@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Purchase Order{% endblock %}
+{% block content %}
+<div class="mb-4"><p class="eyebrow mb-1">PROCUREMENT</p><h1 class="h2 mb-0">Purchase Order</h1></div>
+<div class="card border-0 shadow-sm">
+  <div class="table-responsive"><table class="table table-hover align-middle mb-0">
+    <thead><tr><th>Nomor PO</th><th>Barang</th><th>Supplier</th><th>Tanggal</th><th>Status</th><th>Aksi</th></tr></thead>
+    <tbody>
+    {% for po in orders %}
+    <tr>
+      <td class="fw-semibold">{{ po.po_number }}</td>
+      <td>{{ po.purchase_request.item_name }} <span class="text-secondary">× {{ po.purchase_request.quantity }}</span></td>
+      <td>{{ po.supplier.name }}</td><td>{{ po.created_at.strftime('%d-%m-%Y') }}</td>
+      <td><span class="badge status-{{ po.status }}">{{ po.status }}</span></td>
+      <td class="text-nowrap">
+        <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('po_pdf', po_id=po.id) }}">Unduh PDF</a>
+        {% if current_user.role == 'procurement' and po.status == 'draft' %}
+        <form class="d-inline" method="post" action="{{ url_for('send_po', po_id=po.id) }}"><button class="btn btn-sm btn-primary">Kirim ke Supplier</button></form>
+        {% elif current_user.role in ['procurement', 'admin'] and po.status == 'received' %}
+        <form class="d-inline" method="post" action="{{ url_for('close_po', po_id=po.id) }}"><button class="btn btn-sm btn-success">Tutup PO</button></form>
+        {% elif current_user.role == 'warehouse' and po.status == 'sent' %}
+        <a class="btn btn-sm btn-warning" href="{{ url_for('receiving', po_id=po.id) }}">Input Penerimaan</a>
+        {% endif %}
+      </td>
+    </tr>
+    {% else %}<tr><td colspan="6" class="text-center text-secondary py-5">Belum ada Purchase Order.</td></tr>{% endfor %}
+    </tbody>
+  </table></div>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Notifikasi{% endblock %}
+{% block content %}
+<div class="mb-4">
+  <p class="eyebrow mb-1">PEMBERITAHUAN</p>
+  <h1 class="h2 mb-0">Notifikasi Request</h1>
+</div>
+<div class="card border-0 shadow-sm">
+  <div class="list-group list-group-flush">
+    {% for item in items %}
+    <div class="list-group-item py-3 {{ 'bg-light' if not item.read_at else '' }}">
+      <div class="d-flex justify-content-between align-items-start gap-3">
+        <div>
+          <div class="mb-1">{{ item.message }}</div>
+          <div class="small text-secondary">
+            {{ item.created_at.strftime('%d-%m-%Y %H:%M') }}
+            {% if item.read_at %} · Dibaca{% else %} · <strong>Belum dibaca</strong>{% endif %}
+          </div>
+          {% if item.purchase_request %}
+          <a class="small" href="{{ url_for('request_list') }}">Lihat PR-{{ "%04d"|format(item.request_id) }}</a>
+          {% endif %}
+        </div>
+        {% if not item.read_at %}
+        <form method="post" action="{{ url_for('mark_notification_read', notification_id=item.id) }}">
+          <button class="btn btn-sm btn-outline-primary" type="submit">Tandai dibaca</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+    {% else %}
+    <div class="text-center text-secondary py-5">Belum ada notifikasi.</div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

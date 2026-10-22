@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Supplier{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4"><div><p class="eyebrow mb-1">MASTER DATA</p><h1 class="h2 mb-0">Supplier</h1></div><a class="btn btn-primary" href="{{ url_for('supplier_form') }}">+ Tambah Supplier</a></div>
+<div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table table-hover align-middle mb-0">
+  <thead><tr><th>Nama</th><th>Kontak</th><th>Alamat</th><th>Status</th><th>Aksi</th></tr></thead><tbody>
+  {% for supplier in suppliers %}<tr>
+    <td class="fw-semibold">{{ supplier.name }}</td><td>{{ supplier.contact or '-' }}</td><td>{{ supplier.address or '-' }}</td>
+    <td><span class="badge {{ 'text-bg-success' if supplier.active else 'text-bg-secondary' }}">{{ 'Aktif' if supplier.active else 'Nonaktif' }}</span></td>
+    <td><a class="btn btn-sm btn-outline-primary" href="{{ url_for('supplier_form', supplier_id=supplier.id) }}">Edit</a></td>
+  </tr>{% else %}<tr><td colspan="5" class="text-center text-secondary py-5">Belum ada supplier.</td></tr>{% endfor %}
+  </tbody>
+</table></div></div>
+{% endblock %}

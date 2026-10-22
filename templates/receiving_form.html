@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Input Penerimaan{% endblock %}
+{% block content %}
+<div class="mb-4"><p class="eyebrow mb-1">WAREHOUSE</p><h1 class="h2 mb-0">Periksa Penerimaan</h1></div>
+<div class="card border-0 shadow-sm mb-3"><div class="card-body">
+  <div class="row g-3">
+    <div class="col-md-3"><div class="text-secondary small">Nomor PO</div><strong>{{ po.po_number }}</strong></div>
+    <div class="col-md-3"><div class="text-secondary small">Supplier</div><strong>{{ po.supplier.name }}</strong></div>
+    <div class="col-md-3"><div class="text-secondary small">Barang</div><strong>{{ po.purchase_request.item_name }}</strong></div>
+    <div class="col-md-3"><div class="text-secondary small">Qty dalam PO</div><strong>{{ po.purchase_request.quantity }}</strong></div>
+  </div>
+</div></div>
+<form method="post" class="card border-0 shadow-sm">
+  <div class="card-body p-4">
+    <div class="row g-3">
+      <div class="col-md-6"><label class="form-label" for="received_qty">Kuantitas diterima *</label><input class="form-control" id="received_qty" name="received_qty" type="number" min="0" value="{{ po.purchase_request.quantity }}" required></div>
+      <div class="col-md-6"><label class="form-label" for="condition">Kondisi barang *</label><input class="form-control" id="condition" name="condition" placeholder="Baik, rusak, kemasan terbuka..." required></div>
+      <div class="col-12">
+        <label class="form-label">Hasil pemeriksaan *</label>
+        <div class="d-flex gap-4">
+          <div class="form-check"><input class="form-check-input" type="radio" name="compliant" id="compliant_yes" value="yes" checked><label class="form-check-label" for="compliant_yes">Sesuai PO</label></div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="compliant" id="compliant_no" value="no"><label class="form-check-label" for="compliant_no">Tidak sesuai — komplain/return</label></div>
+        </div>
+      </div>
+      <div class="col-12"><label class="form-label" for="note">Catatan / detail komplain</label><textarea class="form-control" id="note" name="note" rows="3"></textarea><div class="form-text">Wajib diisi bila barang tidak sesuai PO.</div></div>
+    </div>
+  </div>
+  <div class="card-footer bg-white text-end"><a class="btn btn-light" href="{{ url_for('receiving_list') }}">Batal</a> <button class="btn btn-primary">Simpan Hasil Pemeriksaan</button></div>
+</form>
+{% endblock %}

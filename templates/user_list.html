@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Manajemen Pengguna{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4"><div><p class="eyebrow mb-1">ADMINISTRASI</p><h1 class="h2 mb-0">Pengguna & Peran</h1></div><a class="btn btn-primary" href="{{ url_for('user_create') }}">+ Tambah Pengguna</a></div>
+<div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table table-hover align-middle mb-0">
+  <thead><tr><th>Username</th><th>Nama</th><th>Email</th><th>Role</th><th>Aksi</th></tr></thead><tbody>
+  {% for user in users %}<tr><td>{{ user.username }}</td><td>{{ user.full_name or '-' }}</td><td>{{ user.email or '-' }}</td><td><span class="badge text-bg-light">{{ user.role }}</span></td><td><a class="btn btn-sm btn-outline-primary" href="{{ url_for('user_edit', user_id=user.id) }}">Edit</a></td></tr>
+  {% else %}<tr><td colspan="5" class="text-center text-secondary py-5">Belum ada pengguna.</td></tr>{% endfor %}
+  </tbody>
+</table></div></div>
+{% endblock %}

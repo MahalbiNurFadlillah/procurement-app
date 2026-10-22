@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Buat Purchase Order{% endblock %}
+{% block content %}
+<div class="mb-4"><p class="eyebrow mb-1">PROCUREMENT</p><h1 class="h2 mb-0">Buat Purchase Order</h1></div>
+<div class="card border-0 shadow-sm mb-3">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6"><span class="text-secondary">Request</span><div class="fw-semibold">PR-{{ "%04d"|format(pr.id) }} · {{ pr.item_name }}</div></div>
+      <div class="col-md-3"><span class="text-secondary">Kuantitas</span><div class="fw-semibold">{{ pr.quantity }}</div></div>
+      <div class="col-md-3"><span class="text-secondary">Anggaran</span><div class="fw-semibold">{{ "Rp {:,.0f}".format(pr.budget) if pr.budget is not none else '-' }}</div></div>
+    </div>
+    {% if pr.specification %}<hr><div><span class="text-secondary">Spesifikasi:</span> {{ pr.specification }}</div>{% endif %}
+  </div>
+</div>
+<form method="post" class="card border-0 shadow-sm">
+  <div class="card-body p-4">
+    <div class="mb-3">
+      <label class="form-label" for="supplier_id">Supplier *</label>
+      <select class="form-select" id="supplier_id" name="supplier_id" required>
+        <option value="">Pilih supplier</option>
+        {% for supplier in suppliers %}<option value="{{ supplier.id }}">{{ supplier.name }}{% if supplier.contact %} · {{ supplier.contact }}{% endif %}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="payment_terms">Termin pembayaran</label>
+      <input class="form-control" id="payment_terms" name="payment_terms" placeholder="Contoh: Net 30 hari" maxlength="200">
+      <div class="form-text">Pencatatan termin saja; pembayaran aktual di luar aplikasi.</div>
+    </div>
+  </div>
+  <div class="card-footer bg-white text-end"><a class="btn btn-light" href="{{ url_for('dashboard') }}">Batal</a> <button class="btn btn-primary">Simpan sebagai Draft</button></div>
+</form>
+{% endblock %}

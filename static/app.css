@@ -1,0 +1,79 @@
+:root {
+  --ink: #172b4d;
+  --muted: #64748b;
+  --brand: #2457d6;
+  --surface: #f4f7fb;
+}
+
+body {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.app-navbar {
+  background: #14243b;
+}
+
+.app-navbar .navbar-brand {
+  letter-spacing: .02em;
+}
+
+.eyebrow {
+  color: var(--brand);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+
+.page-heading {
+  margin-bottom: 1.5rem;
+}
+
+.metric-card {
+  border: 1px solid #e5eaf2;
+  box-shadow: 0 3px 12px rgb(28 48 82 / 4%);
+}
+
+.card {
+  border-radius: .8rem;
+}
+
+.table > :not(caption) > * > * {
+  padding: .85rem 1rem;
+}
+
+.status-pending {
+  color: #875b00;
+  background: #fff2cc;
+}
+
+.status-approved,
+.status-received,
+.status-closed {
+  color: #17643b;
+  background: #d9f3e4;
+}
+
+.status-rejected {
+  color: #9c2933;
+  background: #fde2e3;
+}
+
+.status-po_created,
+.status-sent {
+  color: #174d8c;
+  background: #dcecff;
+}
+
+.status-draft {
+  color: #475569;
+  background: #e8edf3;
+}
+
+.ocr-result {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: #f5f7fa;
+  border-radius: .5rem;
+  padding: 1rem;
+}

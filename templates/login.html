@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="row justify-content-center py-5">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4 p-lg-5">
+        <p class="eyebrow">PROCUREMENT WORKFLOW</p>
+        <h1 class="h3 mb-1">Selamat datang</h1>
+        <p class="text-secondary mb-4">Masuk untuk mengelola permintaan pengadaan.</p>
+        <form method="post">
+          <label class="form-label" for="username">Username</label>
+          <input class="form-control mb-3" id="username" name="username" autocomplete="username" required autofocus>
+          <label class="form-label" for="password">Password</label>
+          <input class="form-control mb-4" id="password" type="password" name="password" autocomplete="current-password" required>
+          <button class="btn btn-primary w-100" type="submit">Login</button>
+        </form>
+        <div class="small text-secondary mt-4">
+          Akun demo: <code>requester1</code>, <code>procurement1</code>,
+          <code>approver1</code>, <code>warehouse1</code> (password <code>pass</code>).
+          Admin: <code>admin</code> (password awal <code>admin123</code>).
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

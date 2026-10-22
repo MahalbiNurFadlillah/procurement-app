@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if user else 'Tambah' }} Pengguna{% endblock %}
+{% block content %}
+<div class="mb-4"><p class="eyebrow mb-1">ADMINISTRASI</p><h1 class="h2">{{ 'Edit' if user else 'Tambah' }} Pengguna</h1></div>
+<form method="post" class="card border-0 shadow-sm"><div class="card-body p-4">
+  {% if not user %}<div class="mb-3"><label class="form-label" for="username">Username *</label><input class="form-control" id="username" name="username" required maxlength="80"></div>{% else %}<div class="mb-3"><label class="form-label">Username</label><input class="form-control" value="{{ user.username }}" disabled></div>{% endif %}
+  <div class="mb-3"><label class="form-label" for="full_name">Nama lengkap</label><input class="form-control" id="full_name" name="full_name" value="{{ user.full_name if user else '' }}"></div>
+  <div class="mb-3"><label class="form-label" for="email">Email</label><input class="form-control" id="email" name="email" type="email" value="{{ user.email if user else '' }}"></div>
+  <div class="mb-3"><label class="form-label" for="role">Role *</label><select class="form-select" id="role" name="role" required>{% for role in roles %}<option value="{{ role }}" {{ 'selected' if user and user.role == role else '' }}>{{ role|capitalize }}</option>{% endfor %}</select></div>
+  <div class="mb-3"><label class="form-label" for="password">{{ 'Password baru' if user else 'Password *' }}</label><input class="form-control" id="password" name="password" type="password" {{ 'required' if not user }} minlength="8"><div class="form-text">{% if user %}Kosongkan jika tidak ingin mengganti password.{% else %}Minimal 8 karakter.{% endif %}</div></div>
+</div><div class="card-footer bg-white text-end"><a class="btn btn-light" href="{{ url_for('user_list') }}">Batal</a> <button class="btn btn-primary">Simpan</button></div></form>
+{% endblock %}

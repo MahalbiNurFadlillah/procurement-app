@@ -1,0 +1,5 @@
+-r requirements.txt
+Pillow>=10.0,<13.0
+pytesseract>=0.3.10,<1.0
+pypdf>=5.0,<7.0
+pypdfium2>=4.30,<6.0

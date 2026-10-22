@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Profil Saya{% endblock %}
+{% block content %}
+<div class="mb-4"><p class="eyebrow mb-1">AKUN</p><h1 class="h2 mb-0">Profil Saya</h1></div>
+<form method="post" class="card border-0 shadow-sm"><div class="card-body p-4">
+  <div class="mb-3"><label class="form-label">Username</label><input class="form-control" value="{{ current_user.username }}" disabled></div>
+  <div class="mb-3"><label class="form-label" for="full_name">Nama lengkap</label><input class="form-control" id="full_name" name="full_name" value="{{ current_user.full_name or '' }}"></div>
+  <div class="mb-3"><label class="form-label" for="email">Email</label><input class="form-control" id="email" name="email" type="email" value="{{ current_user.email or '' }}"></div>
+  <div class="mb-3"><label class="form-label" for="password">Password baru</label><input class="form-control" id="password" name="password" type="password" minlength="8"><div class="form-text">Kosongkan jika tidak ingin mengganti password.</div></div>
+</div><div class="card-footer bg-white text-end"><button class="btn btn-primary">Simpan Profil</button></div></form>
+{% endblock %}

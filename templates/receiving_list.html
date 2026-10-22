@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Penerimaan Barang{% endblock %}
+{% block content %}
+<div class="mb-4"><p class="eyebrow mb-1">WAREHOUSE</p><h1 class="h2 mb-0">Penerimaan Barang</h1></div>
+<section class="card border-0 shadow-sm mb-4">
+  <div class="card-header bg-white py-3"><h2 class="h5 mb-0">PO Aktif</h2></div>
+  <div class="table-responsive"><table class="table table-hover align-middle mb-0">
+    <thead><tr><th>PO</th><th>Barang</th><th>Qty PO</th><th>Supplier</th><th>Status</th><th>Aksi</th></tr></thead>
+    <tbody>
+    {% for po in orders if po.status == 'sent' %}
+    <tr><td>{{ po.po_number }}</td><td>{{ po.purchase_request.item_name }}</td><td>{{ po.purchase_request.quantity }}</td><td>{{ po.supplier.name }}</td><td><span class="badge status-sent">sent</span></td><td><a class="btn btn-sm btn-primary" href="{{ url_for('receiving', po_id=po.id) }}">Periksa Barang</a></td></tr>
+    {% else %}<tr><td colspan="6" class="text-center text-secondary py-4">Tidak ada PO menunggu penerimaan.</td></tr>{% endfor %}
+    </tbody>
+  </table></div>
+</section>
+<section class="card border-0 shadow-sm">
+  <div class="card-header bg-white py-3"><h2 class="h5 mb-0">Riwayat Penerimaan & Komplain</h2></div>
+  <div class="table-responsive"><table class="table table-hover align-middle mb-0">
+    <thead><tr><th>Tanggal</th><th>PO</th><th>Qty diterima</th><th>Kondisi</th><th>Hasil pemeriksaan</th><th>Catatan</th></tr></thead>
+    <tbody>{% for receipt in history %}
+      <tr><td>{{ receipt.received_at.strftime('%d-%m-%Y %H:%M') }}</td><td>{{ receipt.purchase_order.po_number }}</td><td>{{ receipt.received_qty }}</td><td>{{ receipt.condition }}</td><td>{{ 'Sesuai' if receipt.compliant else 'Komplain / return' }}</td><td>{{ receipt.note or '-' }}</td></tr>
+    {% else %}<tr><td colspan="6" class="text-center text-secondary py-4">Belum ada riwayat.</td></tr>{% endfor %}</tbody>
+  </table></div>
+</section>
+{% endblock %}

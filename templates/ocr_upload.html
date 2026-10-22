@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}OCR Form Request{% endblock %}
+{% block content %}
+<div class="mb-4"><p class="eyebrow mb-1">FITUR OPSIONAL</p><h1 class="h2 mb-1">Ekstraksi Form (OCR)</h1><p class="text-secondary">Unggah gambar atau PDF formulir untuk mengekstrak teks sebagai bantuan pengisian.</p></div>
+<form method="post" enctype="multipart/form-data" class="card border-0 shadow-sm">
+  <div class="card-body p-4">
+    <label class="form-label" for="image">Gambar atau PDF formulir</label>
+    <input class="form-control" id="image" type="file" name="image" accept="image/png,image/jpeg,application/pdf,.pdf" required>
+    <div class="form-text">PNG/JPG/PDF maksimal 8 MB; PDF maksimal 10 halaman. Perlu dependensi OCR proyek dan aplikasi Tesseract OCR terpasang.</div>
+  </div>
+  <div class="card-footer bg-white text-end"><button class="btn btn-primary">Ekstrak Teks</button></div>
+</form>
+{% if extracted_text is not none %}
+<div class="card border-0 shadow-sm mt-4"><div class="card-body">
+  <h2 class="h5">Hasil OCR</h2><pre class="ocr-result">{{ extracted_text }}</pre>
+  {% if extracted_fields %}
+  <div class="alert alert-info">Field yang dikenali: {{ extracted_fields.keys()|join(', ') }}. Periksa kembali sebelum dikirim.</div>
+  {% endif %}
+  <a class="btn btn-success" href="{{ prefill_url }}">Gunakan hasil pada Purchase Request</a>
+</div></div>
+{% endif %}
+{% endblock %}
